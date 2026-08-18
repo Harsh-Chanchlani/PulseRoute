@@ -14,9 +14,9 @@ graph TD
     C -->|Requests Routing| D[Adaptive Router]
     
     subgraph Payment Gateways
-        G1[HDFC Gateway<br>Capacity: 5]
-        G2[SBI Gateway<br>Capacity: 15]
-        G3[ICICI Gateway<br>Capacity: 50]
+        G1[Gateway 1]
+        G2[Gateway 2]
+        G3[Gateway 3]
     end
     
     D -->|Exploit 90% / Explore 10%| G1
@@ -55,6 +55,6 @@ cmake --build build
 ## 📊 Stress Test Scenario
 
 When you run the simulation, it blasts 3000 concurrent transactions through a 20-thread worker pool.
-1. **Phase 1 (Normal Load)**: HDFC has a 99% success rate, so the router favors it. However, because HDFC's capacity is only 5, the Thundering Herd mitigation triggers and gracefully spills excess traffic to SBI to prevent HDFC from being overwhelmed.
-2. **Phase 2 (Catastrophic Crash)**: At transaction 1000, HDFC crashes (success rate plummets to 10%). The router instantly detects the failures via the feedback loop and dynamically shifts the firehose of traffic to SBI.
-3. **Phase 3 (The Weight of History)**: At transaction 2000, HDFC is fixed. However, because its historical average was destroyed during the crash, the router does not instantly switch back. It relies on the 10% "Explore" traffic to slowly realize HDFC is healthy again. (A perfect demonstration of why production systems use Exponential Moving Averages instead of simple averages!).
+1. **Phase 1 (Normal Load)**: Gateway 1 has a 99% success rate, so the router favors it. However, because Gateway 1's capacity is only 5, the Thundering Herd mitigation triggers and gracefully spills excess traffic to Gateway 2 to prevent Gateway 1 from being overwhelmed.
+2. **Phase 2 (Catastrophic Crash)**: At transaction 1000, Gateway 1 crashes (success rate plummets to 10%). The router instantly detects the failures via the feedback loop and dynamically shifts the firehose of traffic to Gateway 2.
+3. **Phase 3 (The Weight of History)**: At transaction 2000, Gateway 1 is fixed. However, because its historical average was destroyed during the crash, the router does not instantly switch back. It relies on the 10% "Explore" traffic to slowly realize Gateway 1 is healthy again. (A perfect demonstration of why production systems use Exponential Moving Averages instead of simple averages!).
