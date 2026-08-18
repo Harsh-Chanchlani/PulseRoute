@@ -1,0 +1,15 @@
+# CMake Build directory
+build/
+
+# IDE files
+.vscode/
+
+# Mac OS files
+.DS_Store
+
+# Compiled object files
+*.o
+*.obj
+
+# Executables
+PulseRoute
